@@ -1,0 +1,14 @@
+server:
+  port: 8761
+
+spring:
+  application:
+    name: service-registry
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    register-with-eureka: false  #don't register with eureka [bcoz it is a server,it shouldn't act as a client and should try to connect itself]
+    fetch-registry: false
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
