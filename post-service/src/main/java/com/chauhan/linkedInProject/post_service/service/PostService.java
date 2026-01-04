@@ -1,5 +1,8 @@
 package com.chauhan.linkedInProject.post_service.service;
 
+import com.chauhan.linkedInProject.post_service.auth.AuthContextHolder;
+import com.chauhan.linkedInProject.post_service.client.ConnectionsServiceClient;
+import com.chauhan.linkedInProject.post_service.dto.PersonDto;
 import com.chauhan.linkedInProject.post_service.dto.PostCreateRequestDto;
 import com.chauhan.linkedInProject.post_service.dto.PostDto;
 import com.chauhan.linkedInProject.post_service.entity.Post;
@@ -20,6 +23,7 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final ModelMapper modelMapper;
+    private final ConnectionsServiceClient connectionsServiceClient;
 
     public PostDto createPost(PostCreateRequestDto postCreateRequestDto, Long userId) {
         log.info("Creating post for user with id: {}", userId);
@@ -31,6 +35,14 @@ public class PostService {
 
     public PostDto getPostById(Long postId) {
         log.info("Getting the post with ID: {}", postId);
+
+        Long userId = AuthContextHolder.getCurrentUserId();
+
+//        TODO: Remove in future
+//        Call the Connections Service from the Posts Service and pass the userId inside the headers
+
+        List<PersonDto> personDtoList = connectionsServiceClient.getFirstDegreeConnections(userId);
+
         Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post not found " +
                 "with ID: "+postId));
         return modelMapper.map(post, PostDto.class);
