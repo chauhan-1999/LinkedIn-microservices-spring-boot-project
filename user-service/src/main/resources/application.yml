@@ -1,4 +1,13 @@
-
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.LongSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+  cloud:
+    inetutils:
+      preferred-networks:
+        - 127.0.0.1
 eureka:
   client:
     service-url:
@@ -7,9 +16,3 @@ eureka:
   instance:
     prefer-ip-address: true
     instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}:${server.port}
-
-spring:
-  cloud:
-    inetutils:
-      preferred-networks:
-        - 127.0.0.1

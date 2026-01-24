@@ -52,9 +52,9 @@ public class PostService {
     public PostDto getPostById(Long postId) {
         log.info("Getting the post with ID: {}", postId);
 
-
         Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post not found " +
                 "with ID: "+postId));
+
         return modelMapper.map(post, PostDto.class);
     }
 

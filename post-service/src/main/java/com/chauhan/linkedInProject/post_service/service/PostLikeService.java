@@ -28,7 +28,6 @@ public class PostLikeService {
     @Transactional
     public void likePost(Long postId) {
         Long userId = AuthContextHolder.getCurrentUserId();
-        log.info("User with ID: {} liking the post with ID: {}", userId, postId);
 
         Post post = postRepository.findById(postId).orElseThrow(()
                 -> new ResourceNotFoundException("Post not found with ID: "+postId));
@@ -36,6 +35,8 @@ public class PostLikeService {
 
         boolean hasAlreadyLiked = postLikeRepository.existsByUserIdAndPostId(userId, postId);
         if(hasAlreadyLiked) throw new BadRequestException("You cannot like the post again");
+
+        log.info("User with ID: {} liking the post with ID: {}", userId, postId);
 
         //create the postLike
         PostLike postLike = new PostLike();
@@ -57,13 +58,15 @@ public class PostLikeService {
     @Transactional
     public void unlikePost(Long postId) {
         Long userId = AuthContextHolder.getCurrentUserId();
-        log.info("User with ID: {} unliking the post with ID: {}", userId, postId);
 
         postRepository.findById(postId).orElseThrow(()
                 -> new ResourceNotFoundException("Post not found with ID: "+postId));
 
         boolean hasAlreadyLiked = postLikeRepository.existsByUserIdAndPostId(userId, postId);
         if(!hasAlreadyLiked) throw new BadRequestException("You cannot unlike the post that you have not liked yet");
+
+        log.info("User with ID: {} unliking the post with ID: {}", userId, postId);
+
         //delete the postLike
         postLikeRepository.deleteByUserIdAndPostId(userId, postId);
     }
