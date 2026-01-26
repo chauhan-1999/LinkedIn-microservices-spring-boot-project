@@ -19,6 +19,8 @@ public class Post {
     @Column(nullable = false)
     private String content;
 
+    private String url;//url->img or vid
+
     @Column(nullable = false)
     private Long userId;
 
