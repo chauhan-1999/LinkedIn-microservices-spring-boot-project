@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: connection-service
+spec:
+  selector:
+    matchLabels:
+      app: connection-service
+  template:
+    metadata:
+      labels:
+        app: connection-service
+    spec:
+      containers:
+      - name: connection-service
+        image: chauhan0799/linkedin-app-connection-service
+        resources:
+          limits:
+            memory: "400Mi"
+            cpu: "200m"
+          requests:
+            memory: "200Mi"
+            cpu: "100m"
+        env:
+          - name: SPRING_PROFILES_ACTIVE
+            value: k8s
+          - name: DB_USERNAME
+            value: neo4j
+          - name: DB_PASSWORD
+            value: password
+          - name: DB_NAME
+            value: connection-db
+          - name: KAFKA_LOG4J_ROOT_LOGLEVEL
+            value: "ERROR"
+          # NEW: Direct Kafka connection strings
+          - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
+            value: "kafka-0.kafka:9092,kafka-1.kafka:9092"
+          - name: SPRING_KAFKA_CONSUMER_GROUP_ID
+            value: "connection-service-v2" # Change to 'v2' to clear stuck rebalances
+
+        ports:
+        - containerPort: 9030
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: connection-service
+spec:
+  selector:
+    app: connection-service
+  ports:
+  - port: 80
+    targetPort: 9030

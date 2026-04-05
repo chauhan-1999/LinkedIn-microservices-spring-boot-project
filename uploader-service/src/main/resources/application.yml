@@ -7,9 +7,9 @@ eureka.client.service-url.defaultZone: http://localhost:8761/eureka
 
 #cloudinary acc info
 cloudinary:
-  cloud-name: ${CLOUD_NAME}
-  api-key: ${API_KEY}
-  api-secret: ${API_SECRET}
+  cloud-name: ${CLOUD_NAME:dsarcqefv}
+  api-key: ${API_KEY:998316274667285}
+  api-secret: ${API_SECRET:wu-MZD7zLcjBTDfsTOz-JHInU_8}
 
 
 eureka:

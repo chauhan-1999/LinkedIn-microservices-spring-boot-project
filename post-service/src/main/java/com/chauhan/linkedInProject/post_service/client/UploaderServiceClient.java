@@ -11,7 +11,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 @FeignClient(
         name = "uploader-service",
-        configuration = FeignMultipartConfig.class
+        configuration = FeignMultipartConfig.class,
+        url = "${UPLOADER_SERVICE_URI:http://localhost:9050}"
 )
 public interface UploaderServiceClient {
 

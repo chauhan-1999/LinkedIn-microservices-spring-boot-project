@@ -1,6 +1,6 @@
 server:
   port: 9000
-jwt.secretKey: idnfdnflsjf9a8s7fd89ihq34kljruyf98ayshcskdhfioafsueonfnesdnfkdnojanj
+jwt.secretKey: ${JWT_SECRET_KEY:idnfdnflsjf9a8s7fd89ihq34kljruyf98ayshcskdhfioafsueonfnesdnfkdnojanj}
 #service-registry
 
 eureka:
@@ -25,14 +25,14 @@ spring:
     gateway:
       routes:
         - id: user-service
-          uri: lb://USER-SERVICE    #THIS SHOULD BE IN CAPITAL
+          uri: ${USER_SERVICE_URI:lb://USER-SERVICE}    #THIS SHOULD BE IN CAPITAL
           predicates:
             - Path=/api/v1/users/**
           filters:
             - StripPrefix=2
 
         - id: post-service
-          uri: lb://POST-SERVICE
+          uri: ${POST_SERVICE_URI:lb://POST-SERVICE}
           predicates:
             - Path=/api/v1/posts/**
           filters:
@@ -40,7 +40,7 @@ spring:
             - name: AuthenticationFilter
 
         - id: connection-service
-          uri: lb://CONNECTION-SERVICE
+          uri: ${CONNECTION_SERVICE_URI:lb://CONNECTION-SERVICE}
           predicates:
             - Path=/api/v1/connections/**
           filters:
